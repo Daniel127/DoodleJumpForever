@@ -33,7 +33,7 @@ namespace Patrones
 						_instance = singleton.AddComponent<T>();
 						singleton.name = $"(Singleton) {typeof(T)}";
 						DontDestroyOnLoad(singleton);
-						Debug.LogError($"#Singleton# Una instancia de {typeof(T)} es necesaria en la escena, '{singleton.name}' ha sido creado con DontDestroyOnLoad.");
+						Debug.Log($"#Singleton# Una instancia de {typeof(T)} es necesaria en la escena, '{singleton.name}' ha sido creado con DontDestroyOnLoad.");
 					}
 					else
 					{
