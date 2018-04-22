@@ -8,14 +8,14 @@ TextureImporter:
     21300002: Bala
     21300004: Plataforma_M_2
     21300006: BigSpritesheet_3
-    21300008: Resorte_2
+    21300008: Resorte_1
     21300010: Plataforma_M_1
     21300012: Plataforma_B
     21300014: Doodle_2
     21300016: Doodle_1
     21300018: Plataforma_V
     21300020: Monstruo_A
-    21300022: Resorte_1
+    21300022: Resorte_2
     21300024: Monstruo_R
     21300026: Doodle_3
     21300028: Trampolin_1
@@ -151,7 +151,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Resorte_2
+      name: Resorte_1
       rect:
         serializedVersion: 2
         x: 297
@@ -197,9 +197,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 367
-        y: 247
+        y: 239
         width: 92
-        height: 82
+        height: 90
       alignment: 9
       pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,7 +215,7 @@ TextureImporter:
         width: 92
         height: 90
       alignment: 9
-      pivot: {x: 0.34, y: 0.5}
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -249,7 +249,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Resorte_1
+      name: Resorte_2
       rect:
         serializedVersion: 2
         x: 210
