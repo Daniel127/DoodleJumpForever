@@ -68,31 +68,27 @@ namespace Patrones.StateMachine
 
 		public virtual void FixedUpdate()
 		{
-			if (!(OnEnter && OnExit))
+			if (OnEnter && OnExit) return;
+			try
 			{
-				try
-				{
-					CurrentState.PhysicsExecute();
-				}
-				catch (NullReferenceException e)
-				{
-					NullException(e);
-				}
+				CurrentState.PhysicsExecute();
+			}
+			catch (NullReferenceException e)
+			{
+				NullException(e);
 			}
 		}
 
 		public virtual void LateUpdate()
 		{
-			if (!(OnEnter && OnExit))
+			if (OnEnter && OnExit) return;
+			try
 			{
-				try
-				{
-					CurrentState.PostExecute();
-				}
-				catch (NullReferenceException e)
-				{
-					NullException(e);
-				}
+				CurrentState.PostExecute();
+			}
+			catch (NullReferenceException e)
+			{
+				NullException(e);
 			}
 		}
 
@@ -106,16 +102,14 @@ namespace Patrones.StateMachine
 
 		public void OnAnimatorIK(int layerIndex)
 		{
-			if (!(OnEnter && OnExit))
+			if (OnEnter && OnExit) return;
+			try
 			{
-				try
-				{
-					CurrentState.OnAnimatorIK(layerIndex);
-				}
-				catch (NullReferenceException e)
-				{
-					NullException(e);
-				}
+				CurrentState.OnAnimatorIK(layerIndex);
+			}
+			catch (NullReferenceException e)
+			{
+				NullException(e);
 			}
 		}
 
@@ -152,23 +146,19 @@ namespace Patrones.StateMachine
 
 		public void AddState<T>() where T : State, new()
 		{
-			if (!ContainsState<T>())
-			{
-				State item = new T();
-				item.Machine = this;
+			if (ContainsState<T>()) return;
+			State item = new T();
+			item.Machine = this;
 
-				States.Add(typeof(T), item);
-			}
+			States.Add(typeof(T), item);
 		}
 		public void AddState(Type T)
 		{
-			if (!ContainsState(T))
-			{
-				State item = (State)Activator.CreateInstance(T);
-				item.Machine = this;
+			if (ContainsState(T)) return;
+			State item = (State)Activator.CreateInstance(T);
+			item.Machine = this;
 
-				States.Add(T, item);
-			}
+			States.Add(T, item);
 		}
 
 		public void RemoveState<T>() where T : State { States.Remove(typeof(T)); }
