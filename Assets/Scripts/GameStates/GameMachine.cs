@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Messaging;
-using Patrones.StateMachine;
+﻿using Patrones.StateMachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +6,8 @@ namespace GameStates
 {
 	public class GameMachine : MachineBehaviour
 	{
+		public GameObject Player;
+
 		[Header("Main Menu Properties")]
 		public GameObject MainMenu;
 		public Button PlayButton;

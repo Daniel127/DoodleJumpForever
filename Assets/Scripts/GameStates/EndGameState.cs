@@ -17,14 +17,16 @@ namespace GameStates
 
 		public override void Enter()
 		{
+			_machine.Player.SetActive(false);
+			_machine.Player.transform.position = Vector3.zero;
 			_machine.EndGameMenu.SetActive(true);
 			GameManager.Instance.CurrentState = GameManager.GameState.EndMenu;
 		}
 
-		public override void Execute()
-		{
-			base.Execute();
-		}
+		//public override void Execute()
+		//{
+		//	base.Execute();
+		//}
 
 		public override void Exit()
 		{

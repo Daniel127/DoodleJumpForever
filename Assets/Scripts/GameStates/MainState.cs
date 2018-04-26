@@ -1,6 +1,5 @@
 ﻿using Managers;
 using Patrones.StateMachine;
-using UnityEngine.UI;
 
 namespace GameStates
 {
