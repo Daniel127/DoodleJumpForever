@@ -17,6 +17,7 @@ namespace GameStates
 		public override void Enter()
 		{
 			_machine.GameMenu.SetActive(true);
+			_machine.Player.SetActive(true);
 			GameManager.Instance.CurrentState = GameManager.GameState.Game;
 		}
 

@@ -18,16 +18,18 @@ namespace GameStates
 		{
 			_machine.PauseMenu.SetActive(true);
 			GameManager.Instance.CurrentState = GameManager.GameState.Pause;
+			Time.timeScale = 0;
 		}
 
-		public override void Execute()
-		{
-			base.Execute();
-		}
+		//public override void Execute()
+		//{
+		//	base.Execute();
+		//}
 
 		public override void Exit()
 		{
 			_machine.PauseMenu.SetActive(false);
+			Time.timeScale = 1;
 		}
 
 		private void Resume()
