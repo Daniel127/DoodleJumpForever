@@ -20,6 +20,7 @@ namespace GameStates
 			_machine.Player.SetActive(false);
 			_machine.Player.transform.position = Vector3.zero;
 			_machine.EndGameMenu.SetActive(true);
+			LevelManager.Instance.enabled = false;
 			GameManager.Instance.CurrentState = GameManager.GameState.EndMenu;
 		}
 

@@ -9,7 +9,7 @@ public class Platform : MonoBehaviour {
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (!collision.collider.CompareTag("Player")) return;
-		if (collision.relativeVelocity.y > 0f || collision.transform.position.y < transform.position.y) return;
+		if (collision.relativeVelocity.y > 0f || (collision.transform.position.y + collision.collider.offset.y) < transform.position.y) return;
 
 		Rigidbody2D rigidBody = collision.collider.GetComponent<Rigidbody2D>();
 		Vector2 velocity = rigidBody.velocity;

@@ -18,6 +18,7 @@ namespace GameStates
 		{
 			_machine.GameMenu.SetActive(true);
 			_machine.Player.SetActive(true);
+			LevelManager.Instance.enabled = true;
 			GameManager.Instance.CurrentState = GameManager.GameState.Game;
 		}
 
