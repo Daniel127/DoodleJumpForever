@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212940047381516512}
   - component: {fileID: 61138783583658280}
   - component: {fileID: 251944543102968886}
+  - component: {fileID: 114760903658002620}
   - component: {fileID: 95687568651935600}
   m_Layer: 0
   m_Name: Plataforma_M
@@ -85,6 +86,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114760903658002620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1109309656518798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a8d4342fa5b3f4bb91f6067cb936c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpForce: 10
 --- !u!212 &212940047381516512
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -143,7 +156,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 359
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
