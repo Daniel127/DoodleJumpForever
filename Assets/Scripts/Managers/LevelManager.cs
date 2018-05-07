@@ -26,12 +26,16 @@ namespace Managers
 		[Range(0, 1)]
 		public float SpecialPlatformProbability;
 
+		[Header("Objects Distance")]
+		public float MinDistance;
+		public float MaxDistance = 2;
 
-		private int _minDistance;
-		private int _maxDistance = 2;
+
+
 		private float _riseTime;
 		private GameObject _finalObject;
 		private List<GameObject> _levelObjects;
+		private readonly object _lockObject = new object();
 
 		private void Start()
 		{
@@ -65,17 +69,23 @@ namespace Managers
 
 		private void FixedUpdate()
 		{
-			if (Player.transform.position.y > 0)
+			if (Player.transform.position.y > 0) 
 			{
 				Rigidbody2D playerRb = Player.GetComponent<Rigidbody2D>();
-				_riseTime = Time.time + Math.Abs(playerRb.velocity.y / (Physics2D.gravity.y * playerRb.gravityScale));
-				Vector3 newPosition = Player.transform.position;
-				newPosition.y = 0;
-				Player.transform.position = newPosition;
-				playerRb.velocity = Vector2.zero;
-				playerRb.gravityScale = 0;
+				if (playerRb.gravityScale > 0)
+				{
+					_riseTime = Time.time + Math.Abs(playerRb.velocity.y / (Physics2D.gravity.y * playerRb.gravityScale));
+
+					Vector3 newPosition = Player.transform.position;
+					newPosition.y = 0;
+					Player.transform.position = newPosition;
+					playerRb.velocity = Vector2.zero;
+					playerRb.gravityScale = 0;
+				}
 			}
 			
+			Debug.Log($"#Tiempos# Time: {Time.time} - RiseTime {_riseTime}");
+
 			if (Time.time < _riseTime)
 			{
 				DownLevel();
@@ -85,8 +95,6 @@ namespace Managers
 				Player.GetComponent<Rigidbody2D>().gravityScale = 1.646f;
 			}
 		}
-
-		private object _lockObject = new object();
 
 		public void DownLevel()
 		{
@@ -110,21 +118,33 @@ namespace Managers
 					}
 				}
 				Debug.Log(_finalObject.transform.position.y - (BoundUpper));
-				if (_finalObject.transform.position.y <= (BoundUpper - _maxDistance))
+				if (_finalObject.transform.position.y <= (BoundUpper - MaxDistance))
 				{
-					GameObject newLevelObject;
-					if (Random.value <= EnemyProbability)
-					{
-						newLevelObject = Enemies[Random.Range(0, Enemies.Length)];
-					}
-					else
-					{
-						newLevelObject = Random.value < SpecialPlatformProbability ? SpecialPlatforms[Random.Range(0, SpecialPlatforms.Length)] : NormalPlatform;
-					}
-					InstantiateLevelObject(newLevelObject);
+					CreateLevelObject();
+				}
+				else if(Random.value <= 0.5 && _finalObject.transform.position.y <= (BoundUpper - MinDistance))
+				{
+					CreateLevelObject();
 				}
 				GameManager.Instance.Score += 1;
 			}
+		}
+
+		private void CreateLevelObject()
+		{
+			GameObject newLevelObject;
+			if (Random.value <= EnemyProbability)
+			{
+				newLevelObject = Enemies[Random.Range(0, Enemies.Length)];
+			}
+			else
+			{
+				newLevelObject = Random.value < SpecialPlatformProbability
+					? SpecialPlatforms[Random.Range(0, SpecialPlatforms.Length)]
+					: NormalPlatform;
+			}
+
+			InstantiateLevelObject(newLevelObject);
 		}
 
 		private GameObject InstantiateLevelObject(GameObject levelObject)
@@ -139,7 +159,7 @@ namespace Managers
 				GameObject finalObject = PoolManager.Instance.Spawn(levelObject, spawnPosition, Quaternion.identity);
 				_levelObjects.Add(finalObject);
 				//_finalObject = finalObject;
-				Debug.Log("Objeto instanciado");
+				Debug.Log("#LevelManager# Objeto instanciado");
 				return finalObject;
 			}
 			
@@ -149,11 +169,9 @@ namespace Managers
 		{
 			lock (_lockObject)
 			{
-				int init = _levelObjects.Count;
 				_levelObjects.Remove(levelObject);
-				int final = _levelObjects.Count;
 				PoolManager.Instance.Despawn(levelObject);
-				Debug.Log("Objeto Eliminado");
+				Debug.Log("#LevelManager# Objeto Eliminado");
 			}
 		}
 	}
