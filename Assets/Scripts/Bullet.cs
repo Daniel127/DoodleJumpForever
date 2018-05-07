@@ -30,6 +30,9 @@ public class Bullet : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D other)
 	{
-		//TODO Hacer
+		if (!other.collider.CompareTag("Enemy")) return;
+
+		PoolManager.Instance.Despawn(other.collider.gameObject);
+		PoolManager.Instance.Despawn(gameObject);
 	}
 }
