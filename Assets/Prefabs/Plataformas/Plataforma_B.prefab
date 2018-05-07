@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpForce: 10
+  type: 1
 --- !u!212 &212113403621180994
 SpriteRenderer:
   m_ObjectHideFlags: 1

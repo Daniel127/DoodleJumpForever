@@ -165,7 +165,7 @@ namespace Managers
 			
 		}
 
-		private void RemoveLevelObject(GameObject levelObject)
+		public void RemoveLevelObject(GameObject levelObject)
 		{
 			lock (_lockObject)
 			{
