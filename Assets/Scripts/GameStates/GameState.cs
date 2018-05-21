@@ -25,6 +25,7 @@ namespace GameStates
 		{
 			if(GameManager.Instance.EndGame)
 				_machine.ChangeState<EndGameState>();
+			_machine.Score.text = $"{GameManager.Instance.Score}";
 		}
 
 		public override void Exit()

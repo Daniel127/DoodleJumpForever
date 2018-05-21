@@ -15,6 +15,7 @@ namespace GameStates
 		[Header("Game UI Properties")]
 		public GameObject GameMenu;
 		public Button PauseButton;
+		public Text Score;
 
 		[Header("Pause Menu Properties")]
 		public GameObject PauseMenu;
