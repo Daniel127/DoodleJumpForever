@@ -157,6 +157,7 @@ namespace Managers
 					y = 5
 				};
 				GameObject finalObject = PoolManager.Instance.Spawn(levelObject, spawnPosition, Quaternion.identity);
+			    finalObject.GetComponent<Platform>().Init();
 				_levelObjects.Add(finalObject);
 				//_finalObject = finalObject;
 				Debug.Log("#LevelManager# Objeto instanciado");

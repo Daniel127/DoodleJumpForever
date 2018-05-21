@@ -9,12 +9,29 @@ public class Platform : MonoBehaviour {
 	public PlatformType type;
 
 	private Animator _animator;
+	private AudioSource _audioSource;
+	private int direction = 1;
 
 	void Start()
 	{
 		if (type == PlatformType.Blanca || type == PlatformType.Marron) {
 			_animator = GetComponent<Animator> ();
-			//_animator.SetBool ("Idle", true);
+		}
+		Init ();
+	    _audioSource = GetComponent<AudioSource>();
+		Debug.Log ("#Plataforma# collider: " + GetComponent<Collider2D>().isActiveAndEnabled);
+	}
+
+	void Update()
+	{
+		if (type == PlatformType.Azul) {
+			if (transform.position.x > 2.2f) {
+				direction = -1;
+			}
+			else if (transform.position.x < -2.2f) {
+				direction = 1;
+			}
+			transform.Translate(Vector3.right * direction * 1.75f * Time.deltaTime);
 		}
 	}
 
@@ -28,18 +45,28 @@ public class Platform : MonoBehaviour {
 			Vector2 velocity = rigidBody.velocity;
 			velocity.y = JumpForce;
 			rigidBody.velocity = velocity;
-		} else {
-			GetComponent<Collider2D> ().enabled = false;
 		}
 
-		if (type == PlatformType.Blanca || type == PlatformType.Marron) {
-			_animator.SetBool ("Destroy", true);
+		if (type == PlatformType.Blanca) {
+			_animator.SetTrigger ("Destroy");
+		}
+
+        _audioSource.Play();
+	}
+
+	private void OnTriggerEnter2D(Collider2D collider)
+	{
+		if (type == PlatformType.Marron && collider.transform.position.y > transform.position.y) {
+			_animator.SetTrigger ("Destroy");
+			GetComponent<Collider2D>().enabled = false;
+			_audioSource.Play ();
+			Debug.Log ("#Plataforma# collider: " + GetComponent<Collider2D>().isActiveAndEnabled);
 		}
 	}
 
 	public void Init()
 	{
-		_animator?.SetBool ("Idle", true);
+		//_animator?.SetTrigger ("Idle");
 		GetComponent<Collider2D> ().enabled = true;
 	}
 
