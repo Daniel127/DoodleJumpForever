@@ -21,6 +21,6 @@ public class Enemy : MonoBehaviour {
 
 	public void Delete()
 	{
-		PoolManager.Instance.Despawn (gameObject.transform.parent.gameObject);
+		LevelManager.Instance.RemoveLevelObject(gameObject.transform.parent.gameObject);
 	}
 }
