@@ -25,6 +25,8 @@ namespace GameStates
 		public GameObject EndGameMenu;
 		public Button TryAgainButton;
 		public Button MainMenuButton;
+		public Text ScoreText;
+		public Text HighScoreText;
 
 		public override void AddStates()
 		{
