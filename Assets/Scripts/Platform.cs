@@ -19,7 +19,6 @@ public class Platform : MonoBehaviour {
 		}
 		Init ();
 	    _audioSource = GetComponent<AudioSource>();
-		Debug.Log ("#Plataforma# collider: " + GetComponent<Collider2D>().isActiveAndEnabled);
 	}
 
 	void Update()
@@ -41,10 +40,7 @@ public class Platform : MonoBehaviour {
 		if (collision.relativeVelocity.y > 0f || (collision.transform.position.y + collision.collider.offset.y) < transform.position.y) return;
 
 		if (type != PlatformType.Marron) {
-			Rigidbody2D rigidBody = collision.collider.GetComponent<Rigidbody2D> ();
-			Vector2 velocity = rigidBody.velocity;
-			velocity.y = JumpForce;
-			rigidBody.velocity = velocity;
+			collision.gameObject.GetComponent<Player> ().Impulse (JumpForce);
 		}
 
 		if (type == PlatformType.Blanca) {
@@ -60,7 +56,6 @@ public class Platform : MonoBehaviour {
 			_animator.SetTrigger ("Destroy");
 			GetComponent<Collider2D>().enabled = false;
 			_audioSource.Play ();
-			Debug.Log ("#Plataforma# collider: " + GetComponent<Collider2D>().isActiveAndEnabled);
 		}
 	}
 
