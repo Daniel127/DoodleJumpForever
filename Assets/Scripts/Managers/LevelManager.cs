@@ -75,13 +75,12 @@ namespace Managers
 				if (playerRb.gravityScale > 0)
 				{
 					_riseTime = Time.time + Math.Abs(playerRb.velocity.y / (Physics2D.gravity.y * playerRb.gravityScale));
-
-					Vector3 newPosition = Player.transform.position;
-					newPosition.y = 0;
-					Player.transform.position = newPosition;
 					playerRb.velocity = Vector2.zero;
 					playerRb.gravityScale = 0;
 				}
+				Vector3 newPosition = Player.transform.position;
+				newPosition.y = 0;
+				Player.transform.position = newPosition;
 			}
 			
 			Debug.Log($"#Tiempos# Time: {Time.time} - RiseTime {_riseTime}");
@@ -157,7 +156,7 @@ namespace Managers
 					y = 5
 				};
 				GameObject finalObject = PoolManager.Instance.Spawn(levelObject, spawnPosition, Quaternion.identity);
-			    finalObject.GetComponent<Platform>().Init();
+			    finalObject.GetComponent<Platform>()?.Init();
 				_levelObjects.Add(finalObject);
 				//_finalObject = finalObject;
 				Debug.Log("#LevelManager# Objeto instanciado");
