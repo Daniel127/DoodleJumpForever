@@ -16,16 +16,17 @@ namespace GameStates
 
 		public override void Enter()
 		{
+			LevelManager.Instance.enabled = true;
+			LevelManager.Instance.InitLevel();
 			_machine.GameMenu.SetActive(true);
 			_machine.Player.SetActive(true);
-			LevelManager.Instance.enabled = true;
+			_machine.Player.GetComponent<Player>().Init();
 			GameManager.Instance.CurrentState = GameManager.GameState.Game;
-			_machine.Player.GetComponent<Player> ().Init ();
 		}
 
 		public override void Execute()
 		{
-			if(GameManager.Instance.EndGame)
+			if (GameManager.Instance.EndGame)
 				_machine.ChangeState<EndGameState>();
 			_machine.Score.text = $"{GameManager.Instance.Score}";
 		}

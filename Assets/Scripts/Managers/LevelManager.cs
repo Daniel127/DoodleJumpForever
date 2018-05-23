@@ -39,7 +39,8 @@ namespace Managers
 
 		private void Start()
 		{
-			Player = GameObject.FindGameObjectWithTag("Player");
+			if(!Player)
+				Player = GameObject.FindGameObjectWithTag("Player");
 			_levelObjects = new List<GameObject>();
 			PoolManager.Instance.CreatePool(NormalPlatform, 20);
 			foreach (GameObject platform in SpecialPlatforms)
@@ -50,8 +51,7 @@ namespace Managers
 			{
 				PoolManager.Instance.CreatePool(enemy, 1);
 			}
-
-			InitLevel();
+			this.enabled = false;
 		}
 
 		public void InitLevel()

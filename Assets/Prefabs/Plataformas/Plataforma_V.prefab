@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 251085510332343484}
   - component: {fileID: 114453204902728532}
   - component: {fileID: 82799998843302786}
+  - component: {fileID: 68453248580221762}
   m_Layer: 0
   m_Name: Plataforma_V
   m_TagString: Platform
@@ -38,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1410500773720246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.27, y: -3.326864, z: 0}
+  m_LocalPosition: {x: -214.49622, y: 549.85645, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -69,6 +70,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.14, y: 0.3}
   m_EdgeRadius: 0
+--- !u!68 &68453248580221762
+EdgeCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1410500773720246}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.45999146, y: 0.10821533}
+  - {x: 0.5501709, y: 0.10461426}
 --- !u!82 &82799998843302786
 AudioSource:
   m_ObjectHideFlags: 1
@@ -220,7 +238,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 359
+  m_SurfaceArc: 0
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1

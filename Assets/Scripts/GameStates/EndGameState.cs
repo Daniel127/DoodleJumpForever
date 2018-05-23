@@ -21,7 +21,7 @@ namespace GameStates
 			_machine.Player.transform.position = Vector3.zero;
 			_machine.EndGameMenu.SetActive(true);
 
-			int highScore = PlayerPrefs.GetInt("HighScore", 0);			
+			int highScore = PlayerPrefs.GetInt("HighScore", 0);
 			if (GameManager.Instance.Score > highScore)
 			{
 				highScore = GameManager.Instance.Score;
@@ -34,11 +34,6 @@ namespace GameStates
 			GameManager.Instance.CurrentState = GameManager.GameState.EndMenu;
 		}
 
-		//public override void Execute()
-		//{
-		//	base.Execute();
-		//}
-
 		public override void Exit()
 		{
 			GameManager.Instance.EndGame = false;
@@ -48,7 +43,6 @@ namespace GameStates
 		private void TryAgain()
 		{
 			GameManager.Instance.Score = 0;
-			LevelManager.Instance.InitLevel();
 			_machine.ChangeState<GameState>();
 		}
 
