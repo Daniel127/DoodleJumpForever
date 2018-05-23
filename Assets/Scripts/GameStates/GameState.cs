@@ -20,6 +20,7 @@ namespace GameStates
 			_machine.Player.SetActive(true);
 			LevelManager.Instance.enabled = true;
 			GameManager.Instance.CurrentState = GameManager.GameState.Game;
+			_machine.Player.GetComponent<Player> ().Init ();
 		}
 
 		public override void Execute()

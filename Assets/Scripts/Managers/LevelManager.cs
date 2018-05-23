@@ -55,7 +55,7 @@ namespace Managers
 		}
 
 		public void InitLevel()
-		{
+		{			
 			const float fraction = 0.06666667F;
 			for (int i = 0; i < 15; i++)
 			{
@@ -96,8 +96,6 @@ namespace Managers
 				newPosition.y = 0;
 				Player.transform.position = newPosition;
 			}
-			
-			Debug.Log($"#Tiempos# Time: {Time.time} - RiseTime {_riseTime}");
 
 			if (Time.time < _riseTime)
 			{
@@ -130,7 +128,6 @@ namespace Managers
 						_finalObject = levelObject;
 					}
 				}
-				Debug.Log(_finalObject.transform.position.y - (BoundUpper));
 				if (_finalObject.transform.position.y <= (BoundUpper - MaxDistance))
 				{
 					CreateLevelObject();
@@ -173,7 +170,7 @@ namespace Managers
 			    finalObject.GetComponent<Platform>()?.Init();
 				_levelObjects.Add(finalObject);
 				//_finalObject = finalObject;
-				Debug.Log("#LevelManager# Objeto instanciado");
+				//Debug.Log("#LevelManager# Objeto instanciado");
 				return finalObject;
 			}
 			
@@ -185,7 +182,7 @@ namespace Managers
 			{
 				_levelObjects.Remove(levelObject);
 				PoolManager.Instance.Despawn(levelObject);
-				Debug.Log("#LevelManager# Objeto Eliminado");
+				//Debug.Log("#LevelManager# Objeto Eliminado");
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
 	{
 		if (!other.collider.CompareTag("Enemy")) return;
 
-		PoolManager.Instance.Despawn(other.collider.gameObject);
+		other.gameObject.GetComponent<Enemy> ().Delete ();
 		PoolManager.Instance.Despawn(gameObject);
 	}
 }

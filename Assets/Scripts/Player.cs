@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 	private float _movement;
 	private float _timeShooting;
 	private float _endShoot;
+	private AudioSource _audioSource;
+	private BoxCollider2D _collider;
 
 	[Header("Movement")]
 	public float Velocity = 1f;
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
 		_sprite = GetComponentInChildren<SpriteRenderer>();
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_animator = GetComponentInChildren<Animator>();
+		_audioSource = GetComponent<AudioSource> ();
+		_collider = GetComponent<BoxCollider2D> ();
 	}
 
 	private void Update ()
@@ -52,6 +56,12 @@ public class Player : MonoBehaviour
 		}
 
 		_animator.SetFloat("VelocityY", _rigidbody.velocity.y);
+	}
+
+	public void Init()
+	{
+		if(_collider)
+			_collider.enabled = true;
 	}
 
 	private void Shoot()
@@ -86,6 +96,24 @@ public class Player : MonoBehaviour
 		transform.position = newPosition;
 
 		if (!(transform.position.y < -5)) return;
+		_animator.SetTrigger ("Jump");
+		_audioSource.Play ();
 		GameManager.Instance.EndGame = true;
+	}
+
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+		if (!other.collider.CompareTag("Enemy")) return;
+		Debug.Log ("#Player# chocaConEnemigo");
+		_animator.SetTrigger ("Jump");
+		_audioSource.Play ();
+		_collider.enabled = false;
+	}
+
+	public void Impulse(float jumpForce)
+	{
+		Vector2 velocity = _rigidbody.velocity;
+		velocity.y = jumpForce;
+		_rigidbody.velocity = velocity;
 	}
 }
