@@ -51,6 +51,11 @@ namespace Managers
 				PoolManager.Instance.CreatePool(enemy, 1);
 			}
 
+			InitLevel();
+		}
+
+		public void InitLevel()
+		{
 			const float fraction = 0.06666667F;
 			for (int i = 0; i < 15; i++)
 			{
@@ -65,7 +70,16 @@ namespace Managers
 			}
 		}
 
-		
+		public void DestroyLevel()
+		{
+			_levelObjects.Clear();
+			PoolMember[] poolMembers = FindObjectsOfType<PoolMember>();
+			for (int i = 0; i < poolMembers.Length; i++)
+			{
+				PoolManager.Instance.Despawn(poolMembers[i].gameObject);
+			}
+
+		}
 
 		private void FixedUpdate()
 		{
