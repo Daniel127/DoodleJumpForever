@@ -20,6 +20,8 @@ namespace GameStates
 			_machine.Player.SetActive(false);
 			_machine.Player.transform.position = Vector3.zero;
 			_machine.EndGameMenu.SetActive(true);
+			LevelManager.Instance.DestroyLevel();
+			LevelManager.Instance.enabled = false;
 			GameManager.Instance.CurrentState = GameManager.GameState.EndMenu;
 		}
 
@@ -36,6 +38,8 @@ namespace GameStates
 
 		private void TryAgain()
 		{
+			GameManager.Instance.Score = 0;
+			LevelManager.Instance.InitLevel();
 			_machine.ChangeState<GameState>();
 		}
 

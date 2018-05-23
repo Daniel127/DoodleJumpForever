@@ -34,5 +34,12 @@ namespace GameStates
 			AddState<EndGameState>();
 			SetInitialState<MainState>();
 		}
+
+		public override void Start()
+		{
+			if (Player == null)
+				Player = GameObject.FindGameObjectWithTag("Player");
+			base.Start();
+		}
 	}
 }
