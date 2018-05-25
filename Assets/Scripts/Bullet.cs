@@ -32,7 +32,8 @@ public class Bullet : MonoBehaviour
 	{
 		if (!other.collider.CompareTag("Enemy")) return;
 
-		other.gameObject.GetComponent<Enemy> ().Delete ();
+	    SoundManager.Instance.MonsterKill();
+        other.gameObject.GetComponent<Enemy> ().Delete ();
 		PoolManager.Instance.Despawn(gameObject);
 	}
 }
