@@ -16,11 +16,15 @@ public class Enemy : MonoBehaviour
 		RaycastHit2D hit = Physics2D.BoxCast(origin, Size, 0, Vector2.zero, 1);
 		if (!hit.transform || !hit.transform.CompareTag("Player")) return;
 		hit.transform.gameObject.GetComponent<Player>().Impulse(10f);
-		Delete();
+		Delete(true);
 	}
 
-	public void Delete()
+	public void Delete(bool onJump = false)
 	{
-		LevelManager.Instance.RemoveLevelObject(gameObject.transform.parent.gameObject);
+	    if (onJump)
+	    {
+	        SoundManager.Instance.MonsterJump();
+	    }
+        LevelManager.Instance.RemoveLevelObject(gameObject.transform.parent.gameObject);
 	}
 }

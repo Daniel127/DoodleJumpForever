@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
 	private float _movement;
 	private float _timeShooting;
 	private float _endShoot;
-	private AudioSource _audioSource;
 	private BoxCollider2D _collider;
 
 	[Header("Movement")]
@@ -29,7 +28,6 @@ public class Player : MonoBehaviour
 		_sprite = GetComponentInChildren<SpriteRenderer>();
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_animator = GetComponentInChildren<Animator>();
-		_audioSource = GetComponent<AudioSource> ();
 		_collider = GetComponent<BoxCollider2D> ();
 	}
 
@@ -97,7 +95,10 @@ public class Player : MonoBehaviour
 
 		if (!(transform.position.y < -5)) return;
 		_animator.SetTrigger ("Jump");
-		_audioSource.Play ();
+	    if (!SoundManager.Instance.IsPlaying())
+	    {
+	        SoundManager.Instance.Falling();
+	    }
 		GameManager.Instance.EndGame = true;
 	}
 
@@ -106,8 +107,8 @@ public class Player : MonoBehaviour
 		if (!other.collider.CompareTag("Enemy")) return;
 		Debug.Log ("#Player# chocaConEnemigo");
 		_animator.SetTrigger ("Jump");
-		_audioSource.Play ();
-		_collider.enabled = false;
+	    SoundManager.Instance.Falling();
+        _collider.enabled = false;
 	}
 
 	public void Impulse(float jumpForce)
