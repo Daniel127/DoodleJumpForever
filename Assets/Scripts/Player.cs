@@ -109,6 +109,7 @@ public class Player : MonoBehaviour
 		_animator.SetTrigger ("Jump");
 	    SoundManager.Instance.Falling();
         _collider.enabled = false;
+		LevelManager.Instance.EndGame ();
 	}
 
 	public void Impulse(float jumpForce)

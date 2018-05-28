@@ -31,7 +31,7 @@ namespace Managers
 		public float MaxDistance = 2;
 
 
-
+		private bool _endGame;
 		private float _riseTime;
 		private GameObject _finalObject;
 		private List<GameObject> _levelObjects;
@@ -68,6 +68,7 @@ namespace Managers
 					_finalObject = platform;
 				}
 			}
+			_endGame = false;
 		}
 
 		public void DestroyLevel()
@@ -83,7 +84,7 @@ namespace Managers
 
 		private void FixedUpdate()
 		{
-			if (Player.transform.position.y > 0) 
+			if (Player.transform.position.y > 0 && !_endGame) 
 			{
 				Rigidbody2D playerRb = Player.GetComponent<Rigidbody2D>();
 				if (playerRb.gravityScale > 0)
@@ -185,5 +186,12 @@ namespace Managers
 				//Debug.Log("#LevelManager# Objeto Eliminado");
 			}
 		}
+
+		public void EndGame()
+		{
+			_endGame = true;
+			Player.GetComponent<Rigidbody2D>().gravityScale = 1.646f;
+		}
+
 	}
 }
