@@ -144,9 +144,12 @@ namespace Managers
 		private void CreateLevelObject()
 		{
 			GameObject newLevelObject;
+			bool isEnemy = false;
+
 			if (Random.value <= EnemyProbability)
 			{
 				newLevelObject = Enemies[Random.Range(0, Enemies.Length)];
+				isEnemy = true;
 			}
 			else
 			{
@@ -155,16 +158,28 @@ namespace Managers
 					: NormalPlatform;
 			}
 
-			InstantiateLevelObject(newLevelObject);
+			var obj = InstantiateLevelObject(newLevelObject);
+
+			if (isEnemy || obj.GetComponent<Platform>()?.type == Platform.PlatformType.Marron) {
+				float x;
+
+				if (obj.transform.position.x <= 0) {
+					x = Random.Range (obj.transform.position.x + 1.5f, LevelWidth);
+				} else {
+					x = Random.Range (-LevelWidth, obj.transform.position.x - 1.5f);
+				}
+
+				InstantiateLevelObject (NormalPlatform, x);
+			}
 		}
 
-		private GameObject InstantiateLevelObject(GameObject levelObject)
+		private GameObject InstantiateLevelObject(GameObject levelObject, float x = 0)
 		{
 			lock (_lockObject)
 			{
 				Vector3 spawnPosition = new Vector3
 				{
-					x = Random.Range(-LevelWidth, LevelWidth),
+					x = x == 0 ? Random.Range(-LevelWidth, LevelWidth) : x,
 					y = 5
 				};
 				GameObject finalObject = PoolManager.Instance.Spawn(levelObject, spawnPosition, Quaternion.identity);
