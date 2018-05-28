@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Platform
+  - Item
+  - Spring_R
+  - Spring_L
+  - Trampoline_R
+  - Trampoline_L
   layers:
   - Default
   - TransparentFX

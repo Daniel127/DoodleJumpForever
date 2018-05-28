@@ -1,0 +1,212 @@
+﻿using System;
+using System.Collections.Generic;
+using Patrones;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+namespace Managers
+{
+	public class LevelManager : Singleton<LevelManager>
+	{
+		public GameObject Player;
+
+		[Header("Level Properties")]
+		public float BoundUpper = 5.2f;
+		public float LevelWidth = 2.27f;
+		public float LevelHeight = 4.9f;
+
+		[Header("Platforms")]
+		public GameObject NormalPlatform;
+		public GameObject[] SpecialPlatforms;
+		[Header("Enemies")]
+		public GameObject[] Enemies;
+
+		[Header("Probabilities"), Range(0, 1)]
+		public float EnemyProbability;
+		[Range(0, 1)]
+		public float SpecialPlatformProbability;
+
+		[Header("Objects Distance")]
+		public float MinDistance;
+		public float MaxDistance = 2;
+
+
+		private bool _endGame;
+		private float _riseTime;
+		private GameObject _finalObject;
+		private List<GameObject> _levelObjects;
+		private readonly object _lockObject = new object();
+
+		private void Start()
+		{
+			if(!Player)
+				Player = GameObject.FindGameObjectWithTag("Player");
+			_levelObjects = new List<GameObject>();
+			PoolManager.Instance.CreatePool(NormalPlatform, 20);
+			foreach (GameObject platform in SpecialPlatforms)
+			{
+				PoolManager.Instance.CreatePool(platform, 5);
+			}
+			foreach (GameObject enemy in Enemies)
+			{
+				PoolManager.Instance.CreatePool(enemy, 1);
+			}
+			this.enabled = false;
+		}
+
+		public void InitLevel()
+		{			
+			const float fraction = 0.06666667F;
+			for (int i = 0; i < 15; i++)
+			{
+				GameObject platform = InstantiateLevelObject(NormalPlatform);
+				Vector3 spawnPosition = platform.transform.position;
+				spawnPosition.y = Mathf.Lerp(-LevelHeight, LevelHeight, fraction * i);
+				platform.transform.position = spawnPosition;
+				if (i == 14)
+				{
+					_finalObject = platform;
+				}
+			}
+			_endGame = false;
+		}
+
+		public void DestroyLevel()
+		{
+			_levelObjects.Clear();
+			PoolMember[] poolMembers = FindObjectsOfType<PoolMember>();
+			for (int i = 0; i < poolMembers.Length; i++)
+			{
+				PoolManager.Instance.Despawn(poolMembers[i].gameObject);
+			}
+
+		}
+
+		private void FixedUpdate()
+		{
+			if (Player.transform.position.y > 0 && !_endGame) 
+			{
+				Rigidbody2D playerRb = Player.GetComponent<Rigidbody2D>();
+				if (playerRb.gravityScale > 0)
+				{
+					_riseTime = Time.time + Math.Abs(playerRb.velocity.y / (Physics2D.gravity.y * playerRb.gravityScale));
+					playerRb.velocity = Vector2.zero;
+					playerRb.gravityScale = 0;
+				}
+				Vector3 newPosition = Player.transform.position;
+				newPosition.y = 0;
+				Player.transform.position = newPosition;
+			}
+
+			if (Time.time < _riseTime)
+			{
+				DownLevel();
+			}
+			else
+			{
+				Player.GetComponent<Rigidbody2D>().gravityScale = 1.646f;
+			}
+		}
+
+		public void DownLevel()
+		{
+			lock (_lockObject)
+			{
+				//Debug.Log($"LevelObjects: {_levelObjects.Count}");
+				for (int i = 0; i < _levelObjects.Count; i++)
+				{
+					GameObject levelObject = _levelObjects[i];
+					Vector3 newPosition = levelObject.transform.position;
+					newPosition.y -= 0.1f;
+					levelObject.transform.position = newPosition;
+					if (newPosition.y <= -BoundUpper - 1)
+					{
+						RemoveLevelObject(levelObject);
+					}
+
+					if (levelObject.transform.position.y > _finalObject.transform.position.y)
+					{
+						_finalObject = levelObject;
+					}
+				}
+				if (_finalObject.transform.position.y <= (BoundUpper - MaxDistance))
+				{
+					CreateLevelObject();
+				}
+				else if(Random.value <= 0.5 && _finalObject.transform.position.y <= (BoundUpper - MinDistance))
+				{
+					CreateLevelObject();
+				}
+				GameManager.Instance.Score += 1;
+			}
+		}
+
+		private void CreateLevelObject()
+		{
+			GameObject newLevelObject;
+			bool isEnemy = false;
+
+			if (Random.value <= EnemyProbability)
+			{
+				newLevelObject = Enemies[Random.Range(0, Enemies.Length)];
+				isEnemy = true;
+			}
+			else
+			{
+				newLevelObject = Random.value < SpecialPlatformProbability
+					? SpecialPlatforms[Random.Range(0, SpecialPlatforms.Length)]
+					: NormalPlatform;
+			}
+
+			var obj = InstantiateLevelObject(newLevelObject);
+
+			if (isEnemy || obj.GetComponent<Platform>()?.type == Platform.PlatformType.Marron) {
+				float x;
+
+				if (obj.transform.position.x <= 0) {
+					x = Random.Range (obj.transform.position.x + 1.5f, LevelWidth);
+				} else {
+					x = Random.Range (-LevelWidth, obj.transform.position.x - 1.5f);
+				}
+
+				InstantiateLevelObject (NormalPlatform, x);
+			}
+		}
+
+		private GameObject InstantiateLevelObject(GameObject levelObject, float x = 0)
+		{
+			lock (_lockObject)
+			{
+				Vector3 spawnPosition = new Vector3
+				{
+					x = x == 0 ? Random.Range(-LevelWidth, LevelWidth) : x,
+					y = 5
+				};
+				GameObject finalObject = PoolManager.Instance.Spawn(levelObject, spawnPosition, Quaternion.identity);
+			    finalObject.GetComponent<Platform>()?.Init();
+				_levelObjects.Add(finalObject);
+				//_finalObject = finalObject;
+				//Debug.Log("#LevelManager# Objeto instanciado");
+				return finalObject;
+			}
+			
+		}
+
+		public void RemoveLevelObject(GameObject levelObject)
+		{
+			lock (_lockObject)
+			{
+				_levelObjects.Remove(levelObject);
+				PoolManager.Instance.Despawn(levelObject);
+				//Debug.Log("#LevelManager# Objeto Eliminado");
+			}
+		}
+
+		public void EndGame()
+		{
+			_endGame = true;
+			Player.GetComponent<Rigidbody2D>().gravityScale = 1.646f;
+		}
+
+	}
+}
